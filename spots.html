@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spots Publicitarios · Nómade Audiovisual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --accent: #B8946A; --page-bg: #0E0D0B; }
+  body { font-family: 'Josefin Sans', sans-serif; background: var(--page-bg); color: #fff; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 3rem; background: rgba(14,13,11,0.95); backdrop-filter: blur(8px);
+    border-bottom: 0.5px solid #1e1c1a;
+  }
+  .nav-logo-img { display: flex; align-items: center; text-decoration: none; }
+  .nav-logo-white { display: block; height: 56px; width: auto; mix-blend-mode: screen; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { text-decoration: none; color: rgba(255,255,255,0.6); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 300; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: #fff; }
+  .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+  .nav-contact { font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); text-decoration: none; font-weight: 300; transition: color 0.2s; }
+  .nav-contact:hover { color: #fff; }
+
+  .page-header { padding: 9rem 4rem 3rem; border-bottom: 0.5px solid #1e1c1a; }
+  .page-title { font-weight: 300; font-size: clamp(1.8rem, 3.5vw, 3.5rem); letter-spacing: 0.15em; text-transform: uppercase; color: #fff; }
+
+  .videos-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: #1a1815; }
+  .video-card { position: relative; overflow: hidden; cursor: pointer; background: transparent; display: block; text-decoration: none; }
+  .video-thumb { width: 100%; aspect-ratio: 16/9; background-size: cover; background-position: center; background-repeat: no-repeat; transition: transform 0.5s ease, filter 0.4s ease; filter: brightness(0.85); position: relative; }
+  .video-card:hover .video-thumb { transform: scale(1.04); filter: brightness(0.6); }
+
+  .video-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 55%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem 1.75rem; }
+  .video-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) scale(0.8); opacity: 0; transition: opacity 0.3s, transform 0.3s; width: 56px; height: 56px; border: 1px solid rgba(255,255,255,0.6); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .video-play-triangle { width: 0; height: 0; border-top: 9px solid transparent; border-bottom: 9px solid transparent; border-left: 15px solid rgba(255,255,255,0.9); margin-left: 4px; }
+  .video-card:hover .video-play { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  .video-tag { font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem; }
+  .video-title { font-weight: 300; font-size: clamp(0.9rem, 1.5vw, 1.2rem); letter-spacing: 0.08em; text-transform: uppercase; color: #fff; line-height: 1.3; }
+
+  footer { background: #0E0D0B; padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; border-top: 0.5px solid rgba(255,255,255,0.06); }
+  .footer-location, .footer-copy { font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
+  .footer-social { display: flex; gap: 1.5rem; align-items: center; }
+  .footer-social a { color: rgba(255,255,255,0.65); transition: color 0.2s; display: flex; align-items: center; }
+  .footer-social a:hover { color: var(--accent); }
+
+  .whatsapp-btn { position: fixed; bottom: 3.5rem; right: 2rem; z-index: 200; width: 56px; height: 56px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(37,211,102,0.35); transition: transform 0.2s; text-decoration: none; }
+  .whatsapp-btn:hover { transform: scale(1.08); }
+
+  .grain { position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.025; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .nav-right { display: none; }
+    .page-header { padding: 7rem 1.5rem 2rem; }
+    .videos-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.75rem; padding: 1.5rem; text-align: center; }
+    .footer-social { justify-content: center; }
+    .whatsapp-btn { bottom: 1.5rem; right: 1.5rem; width: 48px; height: 48px; }
+  }
+
+  /* ============ MOBILE ONLY ============ */
+  @media (max-width: 768px) {
+
+    /* NAV */
+    nav { padding: 0.75rem 1.25rem !important; }
+    .nav-logo-white { height: 42px !important; }
+    .nav-links { display: none !important; }
+    .nav-right { display: none !important; }
+
+    /* HAMBURGER BUTTON */
+    #mob-btn {
+      display: flex !important;
+      position: fixed;
+      top: 14px;
+      right: 16px;
+      z-index: 100000;
+      background: rgba(14,13,11,0.9);
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      flex-direction: column;
+      gap: 6px;
+      border-radius: 4px;
+    }
+    #mob-btn span { display: block; width: 24px; height: 2px; background: #fff; }
+
+    /* PAGE HEADERS */
+    .page-header { padding: 6rem 1.25rem 1.5rem !important; }
+    .page-title { font-size: 1.6rem !important; letter-spacing: 0.1em !important; }
+
+    /* GRIDS - single column for simple pages */
+    .videos-grid { grid-template-columns: 1fr !important; }
+
+    /* FOOTER */
+    footer {
+      flex-direction: column !important;
+      gap: 0.75rem !important;
+      padding: 1.25rem !important;
+      text-align: center !important;
+    }
+    .footer-location, .footer-copy { text-align: center !important; }
+    .footer-social { justify-content: center !important; }
+
+    /* WHATSAPP */
+    .whatsapp-btn { bottom: 1.25rem !important; right: 1.25rem !important; width: 50px !important; height: 50px !important; }
+  }
+  /* ====================================== */
+
+  /* ===== MOBILE ONLY - no desktop changes ===== */
+  @media (max-width: 768px) {
+    nav { padding: 0.75rem 1.25rem !important; }
+    .nav-logo-white { height: 42px !important; }
+    .nav-links { display: none !important; }
+    .nav-right { display: none !important; }
+    .page-header { padding: 6rem 1.25rem 1.5rem !important; }
+    .page-title { font-size: 1.6rem !important; letter-spacing: 0.1em !important; }
+    .videos-grid { grid-template-columns: 1fr !important; }
+    footer { flex-direction: column !important; gap: 0.75rem !important; padding: 1.25rem !important; text-align: center !important; }
+    .footer-location, .footer-copy { text-align: center !important; }
+    .footer-social { justify-content: center !important; }
+    .whatsapp-btn { bottom: 1.25rem !important; right: 1.25rem !important; width: 50px !important; height: 50px !important; }
+  }
+  /* ============================================= */
+
+  /* ===== MOBILE ONLY - added for responsive, desktop unchanged ===== */
+  @media (max-width: 768px) {
+    nav { padding: 0.75rem 1.25rem !important; }
+    .nav-logo-white { height: 42px !important; }
+    .nav-links { display: none !important; }
+    .nav-right { display: none !important; }
+    #mob-btn { display: flex !important; }
+    .page-header { padding: 6rem 1.25rem 1.5rem !important; }
+    .page-title { font-size: 1.6rem !important; letter-spacing: 0.1em !important; }
+    .videos-grid { grid-template-columns: 1fr !important; }
+    footer { flex-direction: column !important; gap: 0.75rem !important; padding: 1.25rem !important; text-align: center !important; }
+    .footer-location, .footer-copy { text-align: center !important; }
+    .footer-social { justify-content: center !important; }
+    .whatsapp-btn { bottom: 1.25rem !important; right: 1.25rem !important; width: 50px !important; height: 50px !important; }
+  }
+  /* ================================================================= */
+
+  #mob-btn {
+    display: none;
+    position: fixed;
+    top: 14px;
+    right: 16px;
+    z-index: 100000;
+    background: rgba(14,13,11,0.92);
+    border: none;
+    cursor: pointer;
+    padding: 10px 12px;
+    flex-direction: column;
+    gap: 6px;
+    border-radius: 4px;
+  }
+  #mob-btn span { display: block; width: 24px; height: 2px; background: #fff; border-radius: 2px; }
+  #mob-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #0a0908;
+    z-index: 99999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  #mob-overlay a {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    padding: 6px 20px;
+  }
+  #mob-overlay a:hover { color: #B8946A; }
+  #mob-close {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    background: none; border: none;
+    color: #fff; font-size: 2.5rem;
+    cursor: pointer; padding: 8px; line-height: 1;
+  }
+  }
+
+</style>
+
+<style id="mob-css">
+
+
+#menuOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,9,8,0.97);
+  z-index: 99999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+#menuOverlay a {
+  font-family: 'Josefin Sans', sans-serif;
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 6px 20px;
+}
+#menuCloseBtn {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: none; border: none;
+  color: white; font-size: 2.5rem;
+  cursor: pointer; padding: 10px;
+}
+@media (min-width: 769px) {
+  
+}
+</style>
+
+<style>
+
+
+#menuOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(10,9,8,0.97);
+  z-index: 99999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+#menuOverlay a {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 8px 20px;
+}
+#menuCloseBtn {
+  position: absolute;
+  top: 1rem; right: 1rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2.5rem;
+  cursor: pointer;
+  padding: 10px;
+  line-height: 1;
+}
+@media (min-width: 769px) {
+  
+}
+</style>
+<style>
+#mob-hamburger {
+  display: none;
+  background: #0E0D0B;
+  border: 1px solid rgba(255,255,255,0.4);
+  cursor: pointer;
+  padding: 10px;
+  flex-direction: column;
+  gap: 6px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 999999;
+}
+#mob-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: white;
+}
+#mob-menu {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: #0a0908;
+  z-index: 999999;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+#mob-menu a {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  text-decoration: none;
+  padding: 8px 20px;
+}
+#mob-menu-close {
+  position: absolute;
+  top: 1.5rem; right: 1.5rem;
+  background: none; border: none;
+  color: #fff; font-size: 2.5rem;
+  cursor: pointer; padding: 8px; line-height: 1;
+}
+@media (max-width: 768px) {
+  #mob-hamburger { display: flex; }
+  .nav-links { display: none !important; }
+  .nav-right { display: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo-img"><img src="Logo_blanco_png.png" alt="Nómade Audiovisual" class="nav-logo-white"></a>
+  <ul class="nav-links">
+    <li><a href="videoclips.html">Videoclips</a></li>
+    <li><a href="redes.html">Redes</a></li>
+    <li><a href="spots.html" class="active">Spots Publicitarios</a></li>
+    <li><a href="eventos.html">Eventos</a></li>
+    <li><a href="institucionales.html">Institucionales</a></li>
+    <li><a href="producto.html">Producto</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="nosotros.html" class="nav-contact">Nosotros</a>
+    <a href="contacto.html" class="nav-contact">Contacto</a>
+  </div>
+  
+  <button id="mob-hamburger" onclick="document.getElementById('mob-menu').style.display='flex'"><span></span><span></span><span></span></button>
+</nav>
+<div id="mob-menu">
+  <button id="mob-menu-close" onclick="document.getElementById('mob-menu').style.display='none'">&#x2715;</button>
+  <a href="videoclips.html">Videoclips</a>
+  <a href="redes.html">Redes</a>
+  <a href="spots.html">Spots Publicitarios</a>
+  <a href="eventos.html">Eventos</a>
+  <a href="institucionales.html">Institucionales</a>
+  <a href="producto.html">Producto</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="contacto.html">Contacto</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="page-header">
+  <h1 class="page-title">Spots Publicitarios</h1>
+</div>
+
+<div class="videos-grid">
+
+  <a class="video-card" href="https://www.youtube.com/watch?v=hwuIm2xhr6Y" target="_blank">
+    <div class="video-thumb" style="background-image:url('sp_1.jpg')">
+      <div class="video-overlay">
+        <div class="video-play"><div class="video-play-triangle"></div></div>
+        <p class="video-tag">Reebok Argentina</p>
+        <h3 class="video-title">Nano X5</h3>
+      </div>
+    </div>
+  </a>
+
+  <a class="video-card" href="https://www.youtube.com/watch?v=K_xTdnTj9U8" target="_blank">
+    <div class="video-thumb" style="background-image:url('sp_2.jpg'); background-color: #1a1815;">
+      <div class="video-overlay">
+        <div class="video-play"><div class="video-play-triangle"></div></div>
+        <p class="video-tag">Casa Jaguar</p>
+        <h3 class="video-title">Verano Jaguar 2026</h3>
+      </div>
+    </div>
+  </a>
+
+  <a class="video-card" href="https://www.youtube.com/watch?v=OfBVF7cl0Zo" target="_blank">
+    <div class="video-thumb" style="background-image:url('sp_3.jpg'); background-color: #1a1815;">
+      <div class="video-overlay">
+        <div class="video-play"><div class="video-play-triangle"></div></div>
+        <p class="video-tag">Supervielle</p>
+        <h3 class="video-title">Inversiones</h3>
+      </div>
+    </div>
+  </a>
+
+  <a class="video-card" href="https://www.youtube.com/watch?v=Os1rGOvqqoU" target="_blank">
+    <div class="video-thumb" style="background-image:url('sp_4.jpg'); background-color: #1a1815;">
+      <div class="video-overlay">
+        <div class="video-play"><div class="video-play-triangle"></div></div>
+        <p class="video-tag">Supervielle</p>
+        <h3 class="video-title">Préstamos</h3>
+      </div>
+    </div>
+  </a>
+
+</div>
+
+<footer>
+  <p class="footer-location">Buenos Aires · Argentina</p>
+  <p class="footer-copy">© 2026 Nómade Audiovisual</p>
+  <div class="footer-social">
+    <a href="https://www.instagram.com/nomadeaudiovisual___/" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg></a>
+    <a href="https://www.youtube.com/@Nomade.audiovisual" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg></a>
+    <a href="https://vimeo.com/user243857396" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 7.42c-.09 2-1.5 4.75-4.2 8.23C15 19.27 12.7 21 10.8 21c-1.17 0-2.16-1.08-2.97-3.25L6.6 12.6C5.94 10.43 5.24 9.34 4.5 9.34c-.16 0-.72.34-1.67 1.01L2 9.12c1.05-.92 2.08-1.84 3.08-2.77C6.5 5.05 7.57 4.34 8.3 4.27c1.73-.17 2.8.98 3.2 3.45.43 2.65.73 4.3.9 4.94.5 2.27 1.05 3.4 1.65 3.4.47 0 1.17-.74 2.1-2.22.93-1.48 1.43-2.6 1.5-3.38.13-1.28-.37-1.92-1.5-1.92-.53 0-1.08.12-1.65.36.98-3.2 2.85-4.76 5.62-4.68.95.03 1.7.3 2.26.82.86.8 1.22 1.97 1.12 3.38z"/></svg></a>
+    <a href="https://www.linkedin.com/in/n%C3%B3made-audiovisual-4a66103b6/" target="_blank"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7"/><path d="M7 7v.01"/><path d="M11 17v-4c0-1.1.9-2 2-2s2 .9 2 2v4"/><path d="M11 10v7"/></svg></a>
+  </div>
+</footer>
+
+<a href="https://wa.me/5491166618660" class="whatsapp-btn" target="_blank"><svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+
+<script>
+  
+</script>
+
+
+
+
+<script>
+// Show hamburger only on mobile, same logic as working test
+if (window.innerWidth <= 768) {
+  var btn = document.getElementById('mob-btn');
+  if (btn) btn.style.display = 'flex';
+}
+window.addEventListener('resize', function() {
+  var btn = document.getElementById('mob-btn');
+  if (!btn) return;
+  btn.style.display = window.innerWidth <= 768 ? 'flex' : 'none';
+});
+
+var hBtn = document.getElementById('mob-btn');
+var overlay = document.getElementById('mob-overlay');
+var cBtn = document.getElementById('mob-close');
+
+if (hBtn && overlay) {
+  hBtn.onclick = function() {
+    overlay.style.display = 'flex';
+  };
+  if (cBtn) cBtn.onclick = function() {
+    overlay.style.display = 'none';
+  };
+  overlay.querySelectorAll('a').forEach(function(a) {
+    a.onclick = function() { overlay.style.display = 'none'; };
+  });
+}
+</script>
+
+
+
+
+
+
+<div id="menuOverlay">
+  <button id="menuCloseBtn">&#x2715;</button>
+  <a href="videoclips.html">Videoclips</a>
+  <a href="redes.html">Redes</a>
+  <a href="spots.html">Spots Publicitarios</a>
+  <a href="eventos.html">Eventos</a>
+  <a href="institucionales.html">Institucionales</a>
+  <a href="producto.html">Producto</a>
+  <a href="nosotros.html">Nosotros</a>
+  <a href="contacto.html">Contacto</a>
+</div>
+
+
+
+
+
+
+
+<script>
+var hb = document.getElementById('mob-hamburger');
+var mn = document.getElementById('mob-menu');
+if (hb && mn) {
+  hb.onclick = function() { mn.style.display = 'flex'; };
+  mn.querySelectorAll('a').forEach(function(a) {
+    a.onclick = function() { mn.style.display = 'none'; };
+  });
+}
+</script>
+</body>
+</html>
