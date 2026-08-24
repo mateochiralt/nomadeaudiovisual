@@ -448,7 +448,6 @@
     color: #fff; font-size: 2.5rem;
     cursor: pointer; padding: 8px; line-height: 1;
   }
-  }
 
 </style>
 
@@ -646,7 +645,15 @@
       <div class="miembro-foto" style="background-image:url('mateo.jpg')"></div>
       <div class="miembro-info">
         <h3 class="miembro-nombre">Mateo Chiralt</h3>
-        <p class="miembro-rol">Realizador Audiovisual</p>
+        <p class="miembro-rol">Director Creativo</p>
+      </div>
+    </div>
+
+    <div class="miembro-card" onclick="openModal('agos')">
+      <div class="miembro-foto" style="background-image:url('agos.jpeg')"></div>
+      <div class="miembro-info">
+        <h3 class="miembro-nombre">Agostina Rojas</h3>
+        <p class="miembro-rol">Diseñadora de imagen y sonido - Productora</p>
       </div>
     </div>
 
@@ -654,7 +661,7 @@
       <div class="miembro-foto" style="background-image:url('mati.jpg')"></div>
       <div class="miembro-info">
         <h3 class="miembro-nombre">Matias Arbonies</h3>
-        <p class="miembro-rol">Diseñador de Imagen y Sonido · Editor</p>
+        <p class="miembro-rol">Diseñador de Imagen y Sonido - Editor</p>
       </div>
     </div>
 
@@ -662,7 +669,7 @@
       <div class="miembro-foto" style="background-image:url('seba.jpg')"></div>
       <div class="miembro-info">
         <h3 class="miembro-nombre">Sebastián Ross</h3>
-        <p class="miembro-rol">Filmmaker · DF</p>
+        <p class="miembro-rol">Filmmaker - DF</p>
       </div>
     </div>
 
@@ -684,8 +691,8 @@
     <div class="modal-foto" style="background-image:url('mateo.jpg')"></div>
     <div class="modal-body">
       <h2 class="modal-nombre">Mateo Chiralt</h2>
-      <p class="modal-rol">Realizador Audiovisual</p>
-      <p class="modal-desc">Realizador Audiovisual freelance hace más de 6 años, Co-fundador de Nómade Audiovisual, es Director, productor y DF habiendo trabajado en diferentes ámbitos audiovisuales desde Videoclips, televisión, y medios digitales. Actualmente se encuentra viviendo en Buenos Aires expandiendo su recorrido por la publicidad.</p>
+      <p class="modal-rol">Director Creativo</p>
+      <p class="modal-desc">Director Creativo y Realizador Audiovisual, con experiencia en distintos ámbitos de la industria, desde videoclips, televisión, medios digitales y publicidad. Fundador de Nómade Audiovisual, donde desarrollo y lidero procesos creativos y de producción para empresas, Agencias y Artistas, trabajando en campañas, contenidos de marca, videoclips y producciones publicitarias. Actualmente me encuentro viviendo en Buenos Aires, donde continúo expandiendo mi recorrido profesional y creativo dentro del mundo de la publicidad.</p>
       <div class="modal-social">
         <a href="https://www.instagram.com/mateochiralt/" target="_blank" aria-label="Instagram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
@@ -698,16 +705,33 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-agos" onclick="closeModal('agos')">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal('agos')">✕</button>
+    <div class="modal-foto" style="background-image:url('agos.jpeg')"></div>
+    <div class="modal-body">
+      <h2 class="modal-nombre">Agostina Rojas</h2>
+      <p class="modal-rol">Diseñadora de Imagen y Sonido - Productora</p>
+      <p class="modal-desc">Diseñadora de imagen y sonido y editora audiovisual freelance con más de 10 años de trayectoria. Recibida en UBA-FADU, trabajó en producción, cámara y edición en proyectos de publicidad, videoclips y cine. Formó parte de productoras como Oruga Cine, The Movement y LCDAL. Actualmente se encuentra en Buenos Aires, coordinando proyectos y trabajando en edición para producciones de México, Chile y Argentina.</p>
+      <div class="modal-social">
+        <a href="https://www.instagram.com/agosroojas/" target="_blank" aria-label="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal-mati" onclick="closeModal('mati')">
   <div class="modal-card" onclick="event.stopPropagation()">
     <button class="modal-close" onclick="closeModal('mati')">✕</button>
     <div class="modal-foto" style="background-image:url('mati.jpg')"></div>
     <div class="modal-body">
       <h2 class="modal-nombre">Matias Arbonies</h2>
-      <p class="modal-rol">Diseñador de Imagen y Sonido · Editor</p>
-      <p class="modal-desc">Descripción próximamente.</p>
+      <p class="modal-rol">Diseñador de Imagen y Sonido - Editor</p>
+      <p class="modal-desc">Editor y creativo audiovisual formado en Diseño de Imagen y Sonido FADU-UBA, con experiencia en publicidad y enfocado en construir narrativas a través de ritmo, montaje y estética. Especializado en piezas de alto impacto visual, motion graphics y VFX.</p>
       <div class="modal-social">
-        <a href="#" target="_blank" aria-label="Instagram">
+        <a href="https://www.instagram.com/matiasarbonies7/" target="_blank" aria-label="Instagram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
         </a>
       </div>
@@ -721,10 +745,10 @@
     <div class="modal-foto" style="background-image:url('seba.jpg')"></div>
     <div class="modal-body">
       <h2 class="modal-nombre">Sebastián Ross</h2>
-      <p class="modal-rol">Filmmaker · DF</p>
-      <p class="modal-desc">Descripción próximamente.</p>
+      <p class="modal-rol">Filmmaker - DF</p>
+      <p class="modal-desc">Realizador Audiovisual y Director de fotografía con trayectoria en videoclips, cine, moda, publicidad y redes sociales. Actualmente Instalado en Buenos Aires, desempeñando áreas de edición, producción y filmación en Esports y Fotografía de moda y Eventos.</p>
       <div class="modal-social">
-        <a href="#" target="_blank" aria-label="Instagram">
+        <a href="https://www.instagram.com/sebaasross/" target="_blank" aria-label="Instagram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
         </a>
       </div>
@@ -739,9 +763,9 @@
     <div class="modal-body">
       <h2 class="modal-nombre">Valentina Dominguez</h2>
       <p class="modal-rol">Community Manager</p>
-      <p class="modal-desc">Descripción próximamente.</p>
+      <p class="modal-desc">Egresada de la carrera de Arquitectura en FADU-UBA, enfocada en el cruce entre el espacio físico y el lenguaje audiovisual. Especializada en arte visual escenográfico y aplicando su mirada proyectual al desarrollo de identidades y narrativas para marcas. Dedicada a la construcción y venta de imagen desde una perspectiva integral, que une diseño, arte y comunicación.</p>
       <div class="modal-social">
-        <a href="#" target="_blank" aria-label="Instagram">
+        <a href="https://www.instagram.com/valencapullo/" target="_blank" aria-label="Instagram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
         </a>
       </div>
